@@ -28,13 +28,14 @@ unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   image: openjdk:17-alpine
   script:
-    - mvn test
+    - mvn package
   artifacts:
     when: always
     paths:
-      - target/surefire-reports
+      - target/*.jar
     reports:
-      junit: target/surefire-reports/*.xml
+      junit: 
+        - target/surefire-reports/*.xml
 
 .lint-test-job:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
