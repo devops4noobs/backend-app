@@ -21,7 +21,7 @@ smoke test:
   script:
     - java -jar ./target/cars-api.jar &
     - sleep 30
-    - curl http://localhost:8080
+    - curl http://localhost:8080/api/all | grep "xx"
 
 
 .unit-test-job:   # This job runs in the test stage.
