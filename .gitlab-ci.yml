@@ -31,6 +31,8 @@ unit-test-job:   # This job runs in the test stage.
     - mvn verify
   artifacts:
     when: always
+    paths:
+      - target/surefire-reports
     reports:
       junit:
         - target/surefire-reports/TEST-*.xml
