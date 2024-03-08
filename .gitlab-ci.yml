@@ -23,6 +23,32 @@ build-job:       # This job runs in the build stage, which runs first.
     - sleep 30
     - curl http://localhost:8080/api/all | grep "xx"
 
+password-auth:
+  services:
+    - postgres
+  variables:
+    # Configure postgres service (https://hub.docker.com/_/postgres/)
+    POSTGRES_DB: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+  image: postgres
+  script:
+    # official way to provide password to psql: http://www.postgresql.org/docs/9.3/static/libpq-envars.html
+    - export PGPASSWORD=$POSTGRES_PASSWORD
+    - psql -h "postgres" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 'OK' AS status;"
+
+host-auth:
+  services:
+    - postgres
+  variables:
+    # Configure postgres service (https://hub.docker.com/_/postgres/)
+    POSTGRES_DB: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_HOST_AUTH_METHOD: trust
+  image: postgres
+  script:
+    - psql -h "postgres" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 'OK' AS status;"
+
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
