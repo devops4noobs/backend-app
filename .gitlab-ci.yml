@@ -24,6 +24,7 @@ build-job:       # This job runs in the build stage, which runs first.
     - curl http://localhost:8080/api/all | grep "xx"
 
 password-auth:
+  stage: build
   services:
     - postgres
   variables:
@@ -38,6 +39,7 @@ password-auth:
     - psql -h "postgres" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 'OK' AS status;"
 
 host-auth:
+  stage: build
   services:
     - postgres
   variables:
