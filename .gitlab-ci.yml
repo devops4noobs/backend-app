@@ -25,26 +25,18 @@ build-job:       # This job runs in the build stage, which runs first.
 
 
 unit-test-job:   # This job runs in the test stage.
-  before_script:
-
-image: "maven:latest"
-  services:
-  - "postgres:latest"
-  stages: 
-  - test
-  test:
-    script:
-      - "echo \" TEST INTEGRATION - BUSINESS\""
-      - "mvn clean install -f src/pom.xml -P test-business"
-    stage: test
-    variables:
-      DATABASE_URL: "postgresql://localhost:5432/postgres"
-      POSTGRES_DB: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_SCRIPT_CREATION_SCHEMA: data.sql
-      POSTGRES_SCRIPT_CREATION_TABLES: data.sql
-      POSTGRES_SCRIPT_INSERT_DATA: data.sql
-      POSTGRES_USER: postgres
+  stage: test    # It only starts when the job in the build stage completes successfully.
+  image: maven:latest
+  script:
+    - mvn test
+  artifacts:
+    when: always
+    paths:
+      - target/surefire-reports
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+        - target/failsafe-reports/TEST-*.xml
 
 .lint-test-job:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
