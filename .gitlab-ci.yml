@@ -38,7 +38,7 @@ image: "maven:latest"
       - "mvn clean install -f src/pom.xml -P test-business"
     stage: test
   variables:
-    DATABASE_URL: "postgresql://localhost:5432/postgres
+    DATABASE_URL: "postgresql://localhost:5432/postgres"
     POSTGRES_DB: postgres
     POSTGRES_PASSWORD: postgres
     POSTGRES_SCRIPT_CREATION_SCHEMA: data.sql
