@@ -23,48 +23,28 @@ build-job:       # This job runs in the build stage, which runs first.
     - sleep 30
     - curl http://localhost:8080/api/all | grep "xx"
 
-password-auth:
-  stage: build
-  services:
-    - postgres
-  variables:
-    # Configure postgres service (https://hub.docker.com/_/postgres/)
-    POSTGRES_DB: postgres
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: postgres
-  image: postgres
-  script:
-    # official way to provide password to psql: http://www.postgresql.org/docs/9.3/static/libpq-envars.html
-    - export PGPASSWORD=$POSTGRES_PASSWORD
-    - psql -h "postgres" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 'OK' AS status;"
-
-host-auth:
-  stage: build
-  services:
-    - postgres
-  variables:
-    # Configure postgres service (https://hub.docker.com/_/postgres/)
-    POSTGRES_DB: postgres
-    POSTGRES_USER: postgres
-    POSTGRES_HOST_AUTH_METHOD: trust
-  image: postgres
-  script:
-    - psql -h "postgres" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 'OK' AS status;"
-
 
 unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
-  image: maven:latest
-  script:
-    - mvn test
-  artifacts:
-    when: always
-    paths:
-      - target/surefire-reports
-    reports:
-      junit:
-        - target/surefire-reports/TEST-*.xml
-        - target/failsafe-reports/TEST-*.xml
+  before_script:
+
+image: "maven:latest"
+  services:
+  - "postgres:latest"
+  stages:
+  - test
+  test:
+    script:
+      - "echo \" TEST INTEGRATION - BUSINESS\""
+      - "mvn clean install -f src/pom.xml -P test-business"
+    stage: test
+  variables:
+    DATABASE_URL: "postgresql://localhost:5432/postgres
+    POSTGRES_DB: postgres
+    POSTGRES_PASSWORD: postgres
+    POSTGRES_SCRIPT_CREATION_SCHEMA: data.sql
+    POSTGRES_SCRIPT_CREATION_TABLES: data.sql
+    POSTGRES_SCRIPT_INSERT_DATA: data.sql
+    POSTGRES_USER: postgres
 
 .lint-test-job:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
