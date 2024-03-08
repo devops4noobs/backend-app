@@ -30,7 +30,7 @@ unit-test-job:   # This job runs in the test stage.
 image: "maven:latest"
   services:
   - "postgres:latest"
-  stages:
+  stages: 
   - test
   test:
     script:
