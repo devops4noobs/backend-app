@@ -32,7 +32,7 @@ unit-test-job:   # This job runs in the test stage.
   artifacts:
     when: always
     paths:
-      - target/*.jar
+      - target/surefire-reports
     reports:
       junit: 
         - target/surefire-reports/*.xml
