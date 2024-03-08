@@ -37,14 +37,14 @@ image: "maven:latest"
       - "echo \" TEST INTEGRATION - BUSINESS\""
       - "mvn clean install -f src/pom.xml -P test-business"
     stage: test
-  variables:
-    DATABASE_URL: "postgresql://localhost:5432/postgres"
-    POSTGRES_DB: postgres
-    POSTGRES_PASSWORD: postgres
-    POSTGRES_SCRIPT_CREATION_SCHEMA: data.sql
-    POSTGRES_SCRIPT_CREATION_TABLES: data.sql
-    POSTGRES_SCRIPT_INSERT_DATA: data.sql
-    POSTGRES_USER: postgres
+    variables:
+      DATABASE_URL: "postgresql://localhost:5432/postgres"
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_SCRIPT_CREATION_SCHEMA: data.sql
+      POSTGRES_SCRIPT_CREATION_TABLES: data.sql
+      POSTGRES_SCRIPT_INSERT_DATA: data.sql
+      POSTGRES_USER: postgres
 
 .lint-test-job:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
