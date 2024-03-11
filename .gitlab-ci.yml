@@ -1,3 +1,5 @@
+image: maven:latest
+
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
@@ -15,7 +17,6 @@ variables:
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
-  image: maven:latest
   script:
     - echo "Compiling the code..."
     - mvn clean install -DskipTests
