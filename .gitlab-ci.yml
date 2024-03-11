@@ -1,11 +1,17 @@
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
-  - deploy
+  - package
+
+cache:
+  paths:
+    - .m2/repository
+    - target
 
 variables:
-  IMAGE_NAME: userApp-backend
-  IMAGE_TAG: maven-app-1.0
+  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+  #IMAGE_NAME: userApp-backend
+  #IMAGE_TAG: maven-app-1.0
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
@@ -18,7 +24,17 @@ build-job:       # This job runs in the build stage, which runs first.
     paths:
       - ./target
 
-build_image:
+test_job:
+  stage: test
+  script:
+    - mvn test
+
+package_job:
+  stage: package
+  script:
+    - mvn package
+
+.build_image:
   stage: build
   image: docker:26.0.0-rc2-dind
   services: 
