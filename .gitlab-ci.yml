@@ -19,11 +19,8 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo "Compiling the code..."
-    - mvn clean install -DskipTests
+    - mvn compile
     - echo "Compile complete."
-  artifacts:
-    paths:
-      - ./target
 
 test_job:
   stage: test
