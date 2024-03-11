@@ -13,7 +13,7 @@ build-job:       # This job runs in the build stage, which runs first.
   artifacts:
     paths:
       - ./target
-.smoke test:
+smoke test:
   stage: test
   image: openjdk:17-alpine
   before_script:
@@ -21,33 +21,17 @@ build-job:       # This job runs in the build stage, which runs first.
   script:
     - java -jar ./target/spring-0.0.1-SNAPSHOT.jar &
     - sleep 30
-    - curl http://localhost:8080/api/all | grep "xx"
+    - curl --request GET --url http://localhost:8080/api/all | grep "george"
 
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
-  image: maven:latest
+  image: openjdk:17-alpine
   script:
-    - mvn test
+    - mvn verify
   artifacts:
     when: always
-    paths:
-      - target/surefire-reports
     reports:
       junit:
         - target/surefire-reports/TEST-*.xml
         - target/failsafe-reports/TEST-*.xml
-
-.lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
-
-.deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
