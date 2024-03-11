@@ -28,7 +28,7 @@ build_image:
   before_script:
     - docker login -u $REGISTRY_USER -p $REGISTRY_PASS
   script:
-    - echo docker login -u $REGISTRY_USER -p $REGISTRY_PASS
+    - echo docker login -u $REGISTRY_USER --password-stdin
     - docker build -t $IMAGE_NAME:$IMAGE_TAG . 
     - docker push $IMAGE_NAME:$IMAGE_TAG
 
