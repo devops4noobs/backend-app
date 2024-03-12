@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  backend:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    container_name: backend
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:$POSTGRESDB_DOCKER_PORT/$POSTGRESDB_DATABASE
+      - SPRING_DATASOURCE_USERNAME=$POSTGRESDB_USER
+      - SPRING_DATASOURCE_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - spring.jpa.properties.hibernate.validator.apply_to_ddl=false
+      - spring.jpa.properties.hibernate.format_sql=true
+      - spring.jpa.hibernate.ddl-auto=create-drop
+      - spring.jpa.show-sql=false
+      - spring.jpa.defer-datasource-initialization=true
+      - spring.sql.init.mode=always
+      - spring.sql.init.data-locations=classpath:data.sql
+      - server.port=8080
+      - server.error.include-message=always
+    env_file: ./.env
+    volumes:
+      - .m2:/root/.m2
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+
+    
+
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      - POSTGRES_USER=$POSTGRESDB_USER
+      - POSTGRES_DB=$POSTGRESDB_DATABASE
+      - POSTGRES_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
+    env_file: ./.env
+    ports:
+      - $POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT
+    volumes:
+      - db:/var/lib/postgres
+volumes:
+  db:
