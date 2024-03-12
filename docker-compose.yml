@@ -1,5 +1,16 @@
 version: '3.8'
 services:
+  frontend:
+    image: react-app:1.0
+    container_name: frontend
+    build:
+      context: ../react_fe/my-app
+
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 3000:80
+
   backend:
     image: 'docker-spring-boot-postgres:latest'
     build:
@@ -13,10 +24,9 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:$POSTGRESDB_DOCKER_PORT/$POSTGRESDB_DATABASE
       - SPRING_DATASOURCE_USERNAME=$POSTGRESDB_USER
       - SPRING_DATASOURCE_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - spring.jpa.properties.hibernate.validator.apply_to_ddl=false
       - spring.jpa.properties.hibernate.format_sql=true
-      - spring.jpa.hibernate.ddl-auto=create-drop
       - spring.jpa.show-sql=false
       - spring.jpa.defer-datasource-initialization=true
       - spring.sql.init.mode=always
