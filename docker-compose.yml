@@ -4,12 +4,14 @@ services:
     image: react-app:1.0
     container_name: frontend
     build:
-      context: ../react_fe/my-app
+      context: ../frontend
 
     volumes:
       - ./src:/app/src
     ports:
       - 3000:80
+    networks:
+      - 3tierapp
 
   backend:
     image: 'docker-spring-boot-postgres:latest'
@@ -38,7 +40,8 @@ services:
       - .m2:/root/.m2
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
-
+    networks:
+      - 3tierapp
     
 
   db:
@@ -53,5 +56,10 @@ services:
       - $POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT
     volumes:
       - db:/var/lib/postgres
+    networks:
+      - 3tierapp
 volumes:
   db:
+networks:
+  3tierapp:
+    driver: bridge
