@@ -9,7 +9,6 @@ stages:          # List of stages for jobs, and their order of execution
 cache:
   paths:
     - .m2/repository
-    - target
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
