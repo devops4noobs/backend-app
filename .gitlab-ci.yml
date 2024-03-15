@@ -13,8 +13,8 @@ cache:
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
-  IMAGE_NAME: ciprianhaldan/ciprianhaldan
-  IMAGE_TAG: maven-app-1.0
+  # IMAGE_NAME: ciprianhaldan/ciprianhaldan
+  # IMAGE_TAG: maven-app-1.0
   IMAGE_NAME: ciprianhaldan/ciprianhaldan
   IMAGE_TAG: backend-app
 
