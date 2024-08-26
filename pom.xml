@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.2.24</version> <!-- Update version if needed -->
+			<version>42.7.4</version> <!-- Update version if needed -->
 		</dependency>
 	
 	</dependencies>

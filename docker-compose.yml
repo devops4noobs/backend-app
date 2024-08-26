@@ -13,6 +13,24 @@ services:
     networks:
       - 3tierapp
 
+  
+    
+
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      - POSTGRES_USER=$POSTGRESDB_USER
+      - POSTGRES_DB=$POSTGRESDB_DATABASE
+      - POSTGRES_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
+    env_file: ./.env
+    ports:
+      - $POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT
+    volumes:
+      - db:/var/lib/postgres
+    networks:
+      - 3tierapp
+
   backend:
     image: 'docker-spring-boot-postgres:latest'
     build:
@@ -40,22 +58,6 @@ services:
       - .m2:/root/.m2
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
-    networks:
-      - 3tierapp
-    
-
-  db:
-    image: postgres
-    container_name: db
-    environment:
-      - POSTGRES_USER=$POSTGRESDB_USER
-      - POSTGRES_DB=$POSTGRESDB_DATABASE
-      - POSTGRES_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
-    env_file: ./.env
-    ports:
-      - $POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT
-    volumes:
-      - db:/var/lib/postgres
     networks:
       - 3tierapp
 volumes:
