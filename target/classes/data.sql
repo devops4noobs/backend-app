@@ -4,6 +4,6 @@ CREATE TABLE my_table (
 );
 
 INSERT INTO my_table (name, age) VALUES
-  ('xoxo', 35),
+  ('cip', 35),
   ('alex', 25),
   ('cuza', 39);
