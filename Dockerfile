@@ -4,7 +4,7 @@ COPY pom.xml .
 RUN mvn dependency:go-offline
 COPY . .
 RUN mvn package
-
+#test
 
 FROM amazoncorretto:17 AS final
 WORKDIR /app
