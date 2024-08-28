@@ -1,7 +1,7 @@
-pipeline{
+pipeline {
     agent any
     tools {
-        jdk 'jdk'
+        jdk 'jdk',
         maven 'maven'
     }
     environment {
@@ -103,7 +103,7 @@ pipeline{
 
         } */
 
-    }
+    
 
     post {
       always {
@@ -121,4 +121,5 @@ pipeline{
                     mimeType: 'text/html',to: "dmistry@yourhostdirect.com"
           }    */   
     }
+}
 }
