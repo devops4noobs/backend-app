@@ -26,14 +26,15 @@ pipeline {
                     }
         } */
 
-        stage('Sonarqube Analysis') {
-            steps {            
-                    withSonarQubeEnv('sonar-server') {
-                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectName=devops4noobs \
-                        -Dsonar.projectKey=devops4noobs '''
+        stage("Sonarqube Analysis") {
+            steps {
+                script {
+                    withSonarQubeEnv(credentialsId: 'sonar-token') {
+                        sh "mvn sonar:sonar"
                     }
                 }
+            }
+
         }
 
         stage('Quality Check') {
