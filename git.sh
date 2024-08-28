@@ -26,4 +26,3 @@ fi
 
 echo "GIT PUSH STARTED"
 $(git push -u origin main)
-fi
