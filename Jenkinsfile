@@ -105,6 +105,12 @@ pipeline {
             }
 
         }
+
+        stage("TRIVY Image Scan") {
+            steps {
+                sh 'trivy image ${DOCKER_IMAGE} > trivyimage.txt' 
+            }
+        }
       }
 
     post {
