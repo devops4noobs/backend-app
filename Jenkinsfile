@@ -21,17 +21,17 @@ pipeline {
 
         stage("Build Application"){
             steps {
-                sh "mvn clean package"
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
             }
 
         }
 
-        /* stage("Test Application"){
+        stage("Test Application"){
             steps {
                 sh "mvn test"
             }
 
-        } */
+        }
 
         /*stage('Test') {
             steps {
