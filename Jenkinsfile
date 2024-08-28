@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         // Define environment variables
+        SCANNER_HOME=tool 'sonar-scanner'
         DOCKER_IMAGE  = "devops4noobs/backend:${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID   = "docker-hub-credentials"
         REGISTRY_URL = "https://index.docker.io/v1/"
@@ -24,6 +25,37 @@ pipeline {
                         sh 'docker run --name my_postgres --network my_network -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres'
                     }
         } */
+
+        stage('Sonarqube Analysis') {
+            steps {            
+                    withSonarQubeEnv('sonar-server') {
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=devops4noobs \
+                        -Dsonar.projectKey=devops4noobs '''
+                    }
+                }
+        }
+
+        stage('Quality Check') {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
+                }
+            }
+        }
+
+        stage('OWASP Dependency-Check Scan') {
+            steps {
+                    dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage('Trivy File Scan') {
+            steps {
+                    sh 'trivy fs . > trivyfs.txt'
+            }
+        }
 
         stage("Build Application"){
             steps {
@@ -47,6 +79,25 @@ pipeline {
                 // If you're using yarn, you would do: sh 'yarn test --watchAll=false'
             }
         }*/
+
+        stage('Sonarqube Analysis') {
+            steps {
+                    withSonarQubeEnv('sonar-server') {
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=three-tier-frontend \
+                        -Dsonar.projectKey=three-tier-frontend '''
+                    }
+            }
+        }
+
+        stage("Quality Gate") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
+                }
+            }
+
+        }
 
         stage('Build Docker Image') {
             steps {
