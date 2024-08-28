@@ -18,12 +18,12 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Database creation') {
+        /* stage('Database creation') {
                     steps {
                         sh 'docker pull postgres'
                         sh 'docker run --name my_postgres --network my_network -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres'
                     }
-        }
+        } */
 
         stage("Build Application"){
             steps {
