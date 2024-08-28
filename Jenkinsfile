@@ -80,25 +80,6 @@ pipeline {
             }
         }*/
 
-        stage('Sonarqube Analysis') {
-            steps {
-                    withSonarQubeEnv('sonar-server') {
-                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectName=three-tier-frontend \
-                        -Dsonar.projectKey=three-tier-frontend '''
-                    }
-            }
-        }
-
-        stage("Quality Gate") {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
-                }
-            }
-
-        }
-
         stage('Build Docker Image') {
             steps {
                 // Build Docker image
