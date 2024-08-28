@@ -50,8 +50,8 @@ pipeline {
                 environment {
                     NDV_API_KEY = "${env.CREDENTIALS_NVD_API_KEY}"
                     }
-                    dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
-                    dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'   
             }
         }
 
