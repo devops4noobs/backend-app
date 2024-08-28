@@ -47,10 +47,8 @@ pipeline {
 
         stage('OWASP Dependency-Check Scan') {
             steps {
-                environment {
-            NDV_API_KEY = "${env.CREDENTIALS_NVD_API_KEY}"
-        }
-        dependencyCheck additionalArguments: "--scan ./ --disableYarnAudit --disableNodeAudit --nvdApiKey ${env.NVD_API_KEY}", odcInstallation: 'DP-Check'
+               
+        dependencyCheck additionalArguments: "--scan ./ --disableYarnAudit --disableNodeAudit --nvdApiKey 5c7f2699-a072-4b9d-a66c-9fc7e4671c8d", odcInstallation: 'DP-Check'
         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
 
             }
