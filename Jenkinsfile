@@ -106,7 +106,7 @@ pipeline {
 
         }
 
-        stage("TRIVY Image Scan") {
+        stage("Trivy Image Scan") {
             steps {
                 sh 'trivy image ${DOCKER_IMAGE} > trivyimage.txt' 
             }
