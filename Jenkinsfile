@@ -26,7 +26,7 @@ pipeline {
                     }
         } */
 
-        stage("Sonarqube Analysis") {
+        /* stage("Sonarqube Analysis") {
             steps {
                 script {
                     withSonarQubeEnv(credentialsId: 'sonar-token') {
@@ -35,6 +35,16 @@ pipeline {
                 }
             }
 
+        } */
+
+        stage('Sonarqube Analysis') {
+            steps {
+                    withSonarQubeEnv('sonar-server') {
+                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=backend-app \
+                        -Dsonar.projectKey=backend-app '''
+                    }
+            }
         }
 
         stage('Quality Check') {
