@@ -37,10 +37,24 @@ pipeline {
 
         } */
 
+        stage("Build Application"){
+            steps {
+                sh "mvn clean package"
+            }
+
+        }
+
+        stage("Test Application"){
+            steps {
+                sh "mvn test"
+            }
+
+        }
+
         stage('Sonarqube Analysis') {
             steps {
                     withSonarQubeEnv('sonar-server') {
-                        sh ''' $SCANNER_HOME/bin/sonar-scanner \
+                        sh ''' mvn sonar:sonar \
                         -Dsonar.projectName=backend-app \
                         -Dsonar.projectKey=backend-app '''
                     }
@@ -70,19 +84,7 @@ pipeline {
             }
         }
 
-        stage("Build Application"){
-            steps {
-                sh "mvn clean package"
-            }
-
-        }
-
-        stage("Test Application"){
-            steps {
-                sh "mvn test"
-            }
-
-        }
+        
         
 
         /*stage('Test') {
@@ -110,7 +112,7 @@ pipeline {
         stage("Push Docker Image") {
             steps {
                 script {
-                    docker.withRegistry(REGISTRY_URL, DOCKER_CREDENTIALS_ID) {
+                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
                         docker.image(DOCKER_IMAGE).push()
                     }
                 }
