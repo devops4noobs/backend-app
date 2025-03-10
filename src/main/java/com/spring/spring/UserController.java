@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 
-//@CrossOrigin(origins = "https://brainversecip-cip-staging.surge.sh/")
+@CrossOrigin(origins = "https://frontend-app-26j.pages.dev")
 public class UserController {
 
     @Autowired
